@@ -9,23 +9,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Install Java
-        uses: actions/setup-java@v2
+        uses: actions/setup-java@v4
         with:
           java-version: "17"
           distribution: "adopt"
           cache: "gradle"
 
       - name: Validate Gradle wrapper
-        uses: gradle/wrapper-validation-action@v1
+        uses: gradle/wrapper-validation-action@v3
 
       - name: Build application
         run: ./gradlew assembleDebug --stacktrace --no-daemon
 
       - name: Upload application
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: app
           path: ./app/build/outputs/apk/debug/app-debug.apk
@@ -39,20 +39,20 @@ jobs:
     needs: build
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       # NOTE: ripgrep is required for line-of-code identification.
       - name: Install ripgrep
         run: sudo apt-get install -y ripgrep
 
       - name: Download application
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: app
 
       - id: upload
         name: NowSecure upload app
-        uses: nowsecure/nowsecure-action/upload-app@v3
+        uses: nowsecure/nowsecure-action/upload-app@v4
         with:
           platform_token: ${{ secrets.NS_TOKEN }}
           app_file: app-debug.apk
@@ -68,10 +68,10 @@ jobs:
     needs: scan
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: NowSecure download report
-        uses: nowsecure/nowsecure-action/convert-sarif@v3
+        uses: nowsecure/nowsecure-action/convert-sarif@v4
         timeout-minutes: 120
         with:
           report_id: ${{ needs.scan.outputs.report_id }}
@@ -80,12 +80,12 @@ jobs:
           group_id: "3ee935d6-c347-4c45-967b-5c8e443392e5"
 
       - name: Upload SARIF file
-        uses: github/codeql-action/upload-sarif@v1
+        uses: github/codeql-action/upload-sarif@v2
         with:
           sarif_file: NowSecure.sarif
 
       - name: Upload SARIF to artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: NowSecure.sarif
           path: ./NowSecure.sarif
