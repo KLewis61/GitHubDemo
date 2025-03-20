@@ -2,7 +2,7 @@ name: "NowSecure Webhook"
 
 on:
   repository_dispatch:
-            types: import-assessment-data 
+    types: import-assessment-data 
 
 jobs:
   # Pulls the NowSecure report, converts it to SARIF and uploads it.
