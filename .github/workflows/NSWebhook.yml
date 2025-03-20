@@ -1,0 +1,40 @@
+name: "NowSecure Webhook"
+
+on:
+  repository_dispatch:
+            types: import-assessment-data 
+
+jobs:
+  # Pulls the NowSecure report, converts it to SARIF and uploads it.
+  process:
+    runs-on: ubuntu-latest
+    permissions:
+      # required for all workflows
+      security-events: write
+      # only required for workflows in private repositories
+      actions: read
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: NowSecure download report
+        uses: nowsecure/nowsecure-action/convert-sarif@v4
+        timeout-minutes: 120
+        with:
+          report_id: "9157e082-0508-11f0-8f9e-7f14caf23706"
+          platform_token: ${{ secrets.NS_TOKEN }}
+          # TODO: Replace the Group ID.
+          group_id: "3ee935d6-c347-4c45-967b-5c8e443392e5"
+
+      - name: Upload SARIF file
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: NowSecure.sarif
+
+      - name: Upload SARIF to artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: NowSecure.sarif
+          path: ./NowSecure.sarif
