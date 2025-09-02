@@ -50,6 +50,9 @@ jobs:
         with:
           name: app
 
+      - name: Check for running assessment
+        run: ./killexisting.sh
+        
       - id: upload
         name: NowSecure upload app
         uses: nowsecure/nowsecure-action/upload-app@v4
