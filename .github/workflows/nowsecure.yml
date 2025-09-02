@@ -49,7 +49,10 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: app
-
+          
+      - name: Make script executable (if needed)
+        run: chmod +x ./killexisting.sh
+        
       - name: Check for running assessment
         run: ./killexisting.sh
         
