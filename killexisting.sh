@@ -8,6 +8,6 @@ STATUS=$(curl --request POST --header 'content-type: application/json' --header 
 
 echo "Status = $STATUS"
 
-if [[ "$STATUS" == "pending" || "$STATUS" == "processing"]]; then
+if [[ "$STATUS" == "pending" || "$STATUS" == "processing" ]]; then
    echo "stop the current job"
 fi 
