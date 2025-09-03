@@ -56,7 +56,7 @@ jobs:
 
           echo "App Ref = $APP_REF"
 
-          STATUS=$(curl --request POST --header 'content-type: application/json' --header "Authorization: Bearer ${{ secrets.NS_TOKEN }}" --url 'https://api.nowsecure.com/graphql' --data '{"query":"query LatestAssessmentSummary($ref: UUID!) {\n  auto {\n    application(ref: $ref) {\n      latestAssessmentSummary {\n        status\n      }\n    }\n  }\n}","variables":{"ref":'"$APP_REF"'}}')
+          STATUS=$(curl --request POST --header 'content-type: application/json' --header "Authorization: Bearer ${{ secrets.NS_TOKEN }}" --url 'https://api.nowsecure.com/graphql' --data '{"query":"query LatestAssessmentSummary($ref: UUID!) {\n  auto {\n    application(ref: $ref) {\n      latestAssessmentSummary {\n        status\n      }\n    }\n  }\n}","variables":{"ref":"$APP_REF"}}')
 
           echo "Status = $STATUS"
         
