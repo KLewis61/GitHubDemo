@@ -59,15 +59,6 @@ jobs:
           STATUS=$(curl --request POST --header 'content-type: application/json' --header "Authorization: Bearer ${{ secrets.NS_TOKEN }}" --url 'https://api.nowsecure.com/graphql' --data '{"query":"query LatestAssessmentSummary($ref: UUID!) {\n  auto {\n    application(ref: $ref) {\n      latestAssessmentSummary {\n        status\n      }\n    }\n  }\n}","variables":{"ref":'"$APP_REF"'}}')
 
           echo "Status = $STATUS"
-
-        
-      - name: Make script executable (if needed)
-        run: chmod +x ./killexisting.sh
-        
-      - name: Check for running assessment
-        env:
-           API_TOKEN: ${{ secrets.NS_TOKEN }}
-        run: ./killexisting.sh
         
       - id: upload
         name: NowSecure upload app
